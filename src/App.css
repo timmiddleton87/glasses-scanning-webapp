@@ -2,8 +2,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-    'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
 }
 
 body {
@@ -13,17 +13,22 @@ body {
     rgba(100, 115, 255, 1) 100%
   );
 }
-.todo-app {
+.device-app {
   display: flex;
   flex-direction: column;
   justify-content: start;
-  width: 520px;
-  min-height: 600px;
+  width: 100%;
+  min-height: 100%;
   background: #161a2b;
   text-align: center;
-  margin: 128px auto;
   border-radius: 10px;
   padding-bottom: 32px;
+}
+
+.same-line-span {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
 }
 
 h1 {
@@ -37,11 +42,7 @@ h1 {
   opacity: 0.4;
 }
 
-.todo-form {
-  margin-bottom: 32px;
-}
-
-.todo-input {
+.device-input {
   padding: 14px 32px 14px 16px;
   border-radius: 4px 0 0 4px;
   border: 2px solid #5d0cff;
@@ -51,14 +52,14 @@ h1 {
   color: #fff;
 }
 
-.todo-input::placeholder {
+.device-input::placeholder {
   color: #e2e2e2;
 }
 
-.todo-button {
+.device-button,
+.clearall-button {
   padding: 16px;
   border: none;
-  border-radius: 0 4px 4px 0;
   cursor: pointer;
   outline: none;
   background: linear-gradient(
@@ -70,11 +71,20 @@ h1 {
   text-transform: capitalize;
 }
 
-.todo-input.edit {
+.device-button {
+  border-radius: 0 4px 4px 0;
+}
+
+.clearall-button {
+  margin-left: 16px;
+  border-radius: 4px;
+}
+
+.device-input.edit {
   border: 2px solid #149fff;
 }
 
-.todo-button.edit {
+.device-button.edit {
   background: linear-gradient(
     90deg,
     rgba(20, 159, 255, 1) 0%,
@@ -83,13 +93,13 @@ h1 {
   padding: 16px 22px;
 }
 
-.todo-container {
+.device-container {
   display: flex;
   flex-direction: row;
   position: relative;
 }
 
-.todo-row {
+.device-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -106,7 +116,7 @@ h1 {
   width: 90%;
 }
 
-.todo-row:nth-child(4n + 1) {
+.device-row:nth-child(4n + 1) {
   background: linear-gradient(
     90deg,
     rgba(93, 12, 255, 1) 0%,
@@ -114,7 +124,7 @@ h1 {
   );
 }
 
-.todo-row:nth-child(4n + 2) {
+.device-row:nth-child(4n + 2) {
   background: linear-gradient(
     90deg,
     rgba(255, 12, 241, 1) 0%,
@@ -122,7 +132,7 @@ h1 {
   );
 }
 
-.todo-row:nth-child(4n + 3) {
+.device-row:nth-child(4n + 3) {
   background: linear-gradient(
     90deg,
     rgba(20, 159, 255, 1) 0%,
