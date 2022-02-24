@@ -3,7 +3,7 @@ import DeviceForm from "./DeviceForm";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { TiEdit } from "react-icons/ti";
 
-const Device = ({ devices, completeDevice, removeDevice, updateDevice }) => {
+const Device = ({ devices, returnDevice, removeDevice, updateDevice }) => {
   const [edit, setEdit] = useState({
     id: null,
     value: "",
@@ -23,10 +23,10 @@ const Device = ({ devices, completeDevice, removeDevice, updateDevice }) => {
 
   return devices.map((device, index) => (
     <div
-      className={device.isComplete ? "device-row complete" : "device-row"}
+      className={device.isReturned ? "device-row returned" : "device-row"}
       key={index}
     >
-      <div key={device.id} onClick={() => completeDevice(device.id)}>
+      <div key={device.id} onClick={() => returnDevice(device.id)}>
         {device.text}
       </div>
       <div className="icons">

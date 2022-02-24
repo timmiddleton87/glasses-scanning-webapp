@@ -51,10 +51,10 @@ function DeviceList() {
     removeAllDevices();
   };
 
-  const completeDevice = (id) => {
+  const returnDevice = (id) => {
     let updatedDevices = devices.map((device) => {
       if (device.id === id) {
-        device.isComplete = !device.isComplete;
+        device.isReturned = !device.isReturned;
       }
       return device;
     });
@@ -63,7 +63,6 @@ function DeviceList() {
 
   return (
     <>
-      <h1>Add</h1>
       <span className="same-line-span">
         <DeviceForm onSubmit={addDevice} />
         <button onClick={handleClearAll} className="clearall-button">
@@ -72,7 +71,7 @@ function DeviceList() {
       </span>
       <Device
         devices={devices}
-        completeDevice={completeDevice}
+        returnDevice={returnDevice}
         removeDevice={removeDevice}
         updateDevice={updateDevice}
         removeAllDevices={removeAllDevices}

@@ -6,22 +6,67 @@
     "Lucida Sans", Arial, sans-serif;
 }
 
-body {
-  background: linear-gradient(
-    90deg,
-    rgba(48, 16, 255, 1) 0%,
-    rgba(100, 115, 255, 1) 100%
-  );
+html {
+  height: 100%;
 }
-.device-app {
+
+body {
+  background: #6a83f5;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  margin-top: auto;
+}
+
+.footer div {
+  background: #e61395;
+}
+
+.header {
+  background: #444;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  grid-gap: 0;
+  min-height: 150px;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-center {
+  background: #9c9c9c;
+}
+
+.header-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-main {
   display: flex;
   flex-direction: column;
   justify-content: start;
   width: 100%;
-  min-height: 100%;
-  background: #161a2b;
   text-align: center;
-  border-radius: 10px;
   padding-bottom: 32px;
 }
 
@@ -37,7 +82,7 @@ h1 {
   font-size: 24px;
 }
 
-.complete {
+.returned {
   text-decoration: line-through;
   opacity: 0.4;
 }
