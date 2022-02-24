@@ -1,6 +1,6 @@
 import React from "react";
 import { useStateMachine } from "little-state-machine";
-import PerformanceForm2 from "./PerformanceForm";
+import PerformanceForm from "./PerformanceForm";
 import { CustomDialog } from "react-st-modal";
 
 function updatePerformanceAction(state, payload) {
@@ -47,13 +47,10 @@ const PerformanceInfo = () => {
       </h3>
       <button
         onClick={async () => {
-          const result = await CustomDialog(
-            <PerformanceForm2 state={state} />,
-            {
-              title: "Edit Performance Data",
-              showCloseIcon: true,
-            }
-          );
+          const result = await CustomDialog(<PerformanceForm state={state} />, {
+            title: "Edit Performance Data",
+            showCloseIcon: true,
+          });
           if (result != null) {
             actions.updatePerformanceAction({
               ...result,

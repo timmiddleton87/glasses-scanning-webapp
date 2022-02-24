@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
-import DeviceList from "./components/DeviceList";
 import { LiveTime } from "./components/TimeDisplay";
 import PerformanceInfo from "./components/PerformanceInfo";
 import Footer from "./components/Footer";
@@ -10,6 +9,7 @@ import {
   createStore,
   useStateMachine,
 } from "little-state-machine";
+import Spreadsheet from "./components/Spreadsheet.tsx";
 
 function App() {
   createStore(
@@ -21,6 +21,7 @@ function App() {
       storageType: localStorage,
     }
   );
+
   return (
     <>
       <StateMachineProvider>
@@ -33,9 +34,8 @@ function App() {
             <LiveTime />
           </div>
         </div>
-        <div className="app-main">
-          <DeviceList />
-        </div>
+        <div className="app-main"></div>
+        <Spreadsheet />
         <div className="footer">
           <Footer />
         </div>
