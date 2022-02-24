@@ -2,25 +2,44 @@ import React from "react";
 import "./App.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
 import DeviceList from "./components/DeviceList";
-import Header from "./components/Header";
+import { LiveTime } from "./components/TimeDisplay";
+import PerformanceInfo from "./components/PerformanceInfo";
 import Footer from "./components/Footer";
+import {
+  StateMachineProvider,
+  createStore,
+  useStateMachine,
+} from "little-state-machine";
 
 function App() {
-  const FooterScrollLength = () => {
-    return "footer scroll";
-  };
-
+  createStore(
+    {
+      performance: {},
+      devices: {},
+    },
+    {
+      storageType: localStorage,
+    }
+  );
   return (
     <>
-      <div className="header">
-        <Header />
-      </div>
-      <div className="app-main">
-        <DeviceList />
-      </div>
-      <div className="footer">
-        <Footer />
-      </div>
+      <StateMachineProvider>
+        <div className="header">
+          <div className="header-left">Glasses Tracker</div>
+          <div className="header-center">
+            <PerformanceInfo />
+          </div>
+          <div className="header-right">
+            <LiveTime />
+          </div>
+        </div>
+        <div className="app-main">
+          <DeviceList />
+        </div>
+        <div className="footer">
+          <Footer />
+        </div>
+      </StateMachineProvider>
     </>
   );
 }
