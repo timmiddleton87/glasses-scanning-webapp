@@ -3,9 +3,9 @@ import { useStateMachine } from "little-state-machine";
 import PerformanceForm from "./PerformanceForm";
 import { CustomDialog } from "react-st-modal";
 
-function updatePerformanceAction(state, payload) {
+function updatePerformanceAction(globalState, payload) {
   return {
-    ...state,
+    ...globalState,
 
     performance: {
       ...payload,
@@ -13,16 +13,17 @@ function updatePerformanceAction(state, payload) {
   };
 }
 
-function clearPerformanceAction(state) {
+function clearPerformanceAction(globalState) {
   return {
-    ...state,
+    ...globalState,
 
     performance: {},
   };
 }
 
-const PerformanceInfo = () => {
-  const { state, actions } = useStateMachine({
+function PerformanceInfo() {
+  const { state } = useStateMachine();
+  const { actions } = useStateMachine({
     updatePerformanceAction,
     clearPerformanceAction,
   });
@@ -69,6 +70,6 @@ const PerformanceInfo = () => {
       </button> */}
     </>
   );
-};
+}
 
 export default PerformanceInfo;
