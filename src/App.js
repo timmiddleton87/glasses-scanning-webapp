@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
+<<<<<<< HEAD
 import { LiveTime } from "./components/TimeDisplay";
 import PerformanceInfo from "./components/PerformanceInfo";
 import Footer from "./components/Footer";
@@ -40,6 +41,28 @@ function App() {
           <Footer />
         </div>
       </StateMachineProvider>
+=======
+import DeviceList from "./components/DeviceList";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+
+function App() {
+  const FooterScrollLength = () => {
+    return "footer scroll";
+  };
+
+  return (
+    <>
+      <div className="header">
+        <Header />
+      </div>
+      <div className="app-main">
+        <DeviceList />
+      </div>
+      <div className="footer">
+        <Footer />
+      </div>
+>>>>>>> parent of 336f6a7 (Feature update)
     </>
   );
 }
