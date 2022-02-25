@@ -1,32 +1,8 @@
 import React from "react";
-import { useStateMachine } from "little-state-machine";
 import PerformanceForm from "./PerformanceForm";
 import { CustomDialog } from "react-st-modal";
 
-function updatePerformanceAction(state, payload) {
-  return {
-    ...state,
-
-    performance: {
-      ...payload,
-    },
-  };
-}
-
-function clearPerformanceAction(state) {
-  return {
-    ...state,
-
-    performance: {},
-  };
-}
-
-const PerformanceInfo = () => {
-  const { state, actions } = useStateMachine({
-    updatePerformanceAction,
-    clearPerformanceAction,
-  });
-
+const PerformanceInfo = ({ state, actions }) => {
   return (
     <>
       <h3>Venue: {state.performance.venuename}</h3>
@@ -47,10 +23,13 @@ const PerformanceInfo = () => {
       </h3>
       <button
         onClick={async () => {
-          const result = await CustomDialog(<PerformanceForm state={state} />, {
-            title: "Edit Performance Data",
-            showCloseIcon: true,
-          });
+          const result = await CustomDialog(
+            <PerformanceForm state={state} actions={actions} />,
+            {
+              title: "Edit Performance Data",
+              showCloseIcon: true,
+            }
+          );
           if (result != null) {
             actions.updatePerformanceAction({
               ...result,

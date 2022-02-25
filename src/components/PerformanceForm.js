@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDialog } from "react-st-modal";
 
-function PerformanceForm({ state }) {
+function PerformanceForm({ state, actions }) {
   const dialog = useDialog();
 
   const INITIAL_PERF = [

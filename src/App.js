@@ -1,15 +1,13 @@
 import React from "react";
 import "./App.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
-import { LiveTime } from "./components/TimeDisplay";
-import PerformanceInfo from "./components/PerformanceInfo";
-import Footer from "./components/Footer";
 import {
   StateMachineProvider,
   createStore,
   useStateMachine,
+  GlobalState,
 } from "little-state-machine";
-import Spreadsheet from "./components/Spreadsheet.tsx";
+import AppHandler from "./components/AppHandler";
 
 function App() {
   createStore(
@@ -25,20 +23,7 @@ function App() {
   return (
     <>
       <StateMachineProvider>
-        <div className="header">
-          <div className="header-left">Glasses Tracker</div>
-          <div className="header-center">
-            <PerformanceInfo />
-          </div>
-          <div className="header-right">
-            <LiveTime />
-          </div>
-        </div>
-        <div className="app-main"></div>
-        <Spreadsheet />
-        <div className="footer">
-          <Footer />
-        </div>
+        <AppHandler />
       </StateMachineProvider>
     </>
   );
