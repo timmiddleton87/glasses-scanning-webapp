@@ -36,75 +36,26 @@ function Device() {
   );
 }
 
-function resetDevicesAction(globalState, payload) {
-  return {
-    ...globalState,
-    devices: defaultData.devices,
-  };
-}
-
-function clearAllAction(globalState, payload) {
-  return {
-    ...globalState,
-    devices: {},
-    performance: {},
-  };
-}
-
-function ClearAll() {
-  const { state, actions } = useStateMachine({
-    clearAllAction,
-  });
-  return (
-    <button
-      onClick={() => {
-        actions.clearAllAction({});
-      }}
-    >
-      clear all
-    </button>
-  );
-}
-
-function ResetDevices() {
-  const { state, actions } = useStateMachine({
-    resetDevicesAction,
-  });
-  return (
-    <button
-      onClick={() => {
-        actions.resetDevicesAction({});
-      }}
-    >
-      reset devices
-    </button>
-  );
-}
-
 function App() {
   return (
-    <>
-      <StateMachineProvider>
-        <div className="header">
-          <div className="header-left">Glasses Tracker</div>
-          <div className="header-center">
-            <PerformanceInfo />
-          </div>
-          <div className="header-right">
-            <LiveTime />
-            <IssuedCounter />
-          </div>
+    <StateMachineProvider>
+      <div className="header">
+        <div className="header-left">Glasses Tracker</div>
+        <div className="header-center">
+          <PerformanceInfo />
         </div>
-        <div className="app-main">
-          <TableFeeder />
+        <div className="header-right">
+          <LiveTime />
+          <IssuedCounter />
         </div>
-        <div className="footer">
-          <ClearAll />
-          <ResetDevices />
-          <Footer />
-        </div>
-      </StateMachineProvider>
-    </>
+      </div>
+      <div className="app-main">
+        <TableFeeder />
+      </div>
+      <div className="footer">
+        <Footer resetdata={defaultData} />
+      </div>
+    </StateMachineProvider>
   );
 }
 

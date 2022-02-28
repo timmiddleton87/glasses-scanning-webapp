@@ -4,6 +4,7 @@
   padding: 0;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
+  font-family: sans-serif;
 }
 
 html {
@@ -52,7 +53,7 @@ body {
 }
 
 .header-center {
-  background: #9c9c9c;
+  background: darkgrey;
 }
 
 .header-right {
@@ -80,123 +81,4 @@ h1 {
   margin: 32px 0;
   color: #fff;
   font-size: 24px;
-}
-
-.returned {
-  text-decoration: line-through;
-  opacity: 0.4;
-}
-
-.device-input {
-  padding: 14px 32px 14px 16px;
-  border-radius: 4px 0 0 4px;
-  border: 2px solid #5d0cff;
-  outline: none;
-  width: 320px;
-  background: transparent;
-  color: #fff;
-}
-
-.device-input::placeholder {
-  color: #e2e2e2;
-}
-
-.device-button,
-.clearall-button {
-  padding: 16px;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  background: linear-gradient(
-    90deg,
-    rgba(93, 12, 255, 1) 0%,
-    rgba(155, 0, 250, 1) 100%
-  );
-  color: #fff;
-  text-transform: capitalize;
-}
-
-.device-button {
-  border-radius: 0 4px 4px 0;
-}
-
-.clearall-button {
-  margin-left: 16px;
-  border-radius: 4px;
-}
-
-.device-input.edit {
-  border: 2px solid #149fff;
-}
-
-.device-button.edit {
-  background: linear-gradient(
-    90deg,
-    rgba(20, 159, 255, 1) 0%,
-    rgba(17, 122, 255, 1) 100%
-  );
-  padding: 16px 22px;
-}
-
-.device-container {
-  display: flex;
-  flex-direction: row;
-  position: relative;
-}
-
-.device-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 4px auto;
-  color: #fff;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 118, 20, 1) 0%,
-    rgba(255, 84, 17, 1) 100%
-  );
-
-  padding: 16px;
-  border-radius: 5px;
-  width: 90%;
-}
-
-.device-row:nth-child(4n + 1) {
-  background: linear-gradient(
-    90deg,
-    rgba(93, 12, 255, 1) 0%,
-    rgba(155, 0, 250, 1) 100%
-  );
-}
-
-.device-row:nth-child(4n + 2) {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 12, 241, 1) 0%,
-    rgba(250, 0, 135, 1) 100%
-  );
-}
-
-.device-row:nth-child(4n + 3) {
-  background: linear-gradient(
-    90deg,
-    rgba(20, 159, 255, 1) 0%,
-    rgba(17, 122, 255, 1) 100%
-  );
-}
-
-.icons {
-  display: flex;
-  align-items: center;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.delete-icon {
-  margin-right: 5px;
-  color: #fff;
-}
-
-.edit-icon {
-  color: #fff;
 }

@@ -48,10 +48,7 @@ function PerformanceInfo() {
       </h3>
       <button
         onClick={async () => {
-          const result = await CustomDialog(<PerformanceForm state={state} />, {
-            title: "Edit Performance Data",
-            showCloseIcon: true,
-          });
+          const result = await CustomDialog(<PerformanceForm state={state} />);
           if (result != null) {
             actions.updatePerformanceAction({
               ...result,
@@ -61,13 +58,6 @@ function PerformanceInfo() {
       >
         Edit Performance Data
       </button>
-      {/* <button
-        onClick={async () => {
-          actions.clearPerformanceAction(state);
-        }}
-      >
-        CLEAR ALL
-      </button> */}
     </>
   );
 }
