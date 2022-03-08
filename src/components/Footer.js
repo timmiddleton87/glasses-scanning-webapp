@@ -1,5 +1,6 @@
 import React from "react";
 import { useStateMachine } from "little-state-machine";
+import { Button, Stack } from "react-bootstrap";
 
 function resetDevicesAction(globalState, payload) {
   return {
@@ -16,41 +17,30 @@ function clearAllAction(globalState, payload) {
   };
 }
 
-function ClearAll() {
+function Footer({ resetdata }) {
   const { state, actions } = useStateMachine({
     clearAllAction,
-  });
-  return (
-    <button
-      onClick={() => {
-        actions.clearAllAction({});
-      }}
-    >
-      clear all
-    </button>
-  );
-}
-
-function ResetDevices({ resetdata }) {
-  const { state, actions } = useStateMachine({
     resetDevicesAction,
   });
   return (
-    <button
-      onClick={() => {
-        actions.resetDevicesAction(resetdata);
-      }}
-    >
-      reset devices
-    </button>
-  );
-}
-
-function Footer({ resetdata }) {
-  return (
     <>
-      <ClearAll />
-      <ResetDevices resetdata={resetdata} />
+      <Stack direction="horizontal" gap={3}>
+        <p></p>
+        <Button
+          onClick={() => {
+            actions.clearAllAction({});
+          }}
+        >
+          Clear All
+        </Button>
+        <Button
+          onClick={() => {
+            actions.resetDevicesAction(resetdata);
+          }}
+        >
+          Reset Devices
+        </Button>
+      </Stack>
     </>
   );
 }

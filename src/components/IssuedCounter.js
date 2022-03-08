@@ -1,7 +1,7 @@
 import React from "react";
 import { useStateMachine } from "little-state-machine";
 
-function IssuedCounter() {
+export function ResultCounter() {
   const { state } = useStateMachine();
 
   let data = []; // Clear it first, in case of empty input array
@@ -11,13 +11,22 @@ function IssuedCounter() {
   }
 
   const numberOfResults =
-    data.length + " result" + (data.length == 1 ? "" : "s");
+    data.length + " result" + (data.length === 1 ? "" : "s");
 
-  return (
-    <>
-      <h2>{numberOfResults}</h2>
-    </>
-  );
+  return <>{numberOfResults}</>;
 }
 
-export default IssuedCounter;
+export function DeviceCounter({ searchstatus }) {
+  const { state } = useStateMachine();
+
+  let status2 = [];
+
+  if (state.devices.length > 0) {
+    let status = state.devices.filter((a) => a.status == searchstatus);
+    if (status.length > 0 || status.length !== null) {
+      status2 = status;
+    }
+  }
+
+  return <>{status2.length}</>;
+}

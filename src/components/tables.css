@@ -1,0 +1,42 @@
+.device_table_container {
+  padding: 0;
+}
+
+.device_table_head {
+  text-align: center;
+}
+
+.device_table tbody {
+  text-align: center;
+}
+
+.device_table thead tr {
+  background-color: lightgrey;
+  position: sticky;
+  top: 8rem;
+  border-bottom: 5px solid black;
+}
+
+.device_table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* NO DEVICE STATUS */
+.device_status_0 {
+  background-color: rgba(255, 255, 0, 0.5) !important;
+}
+
+/* DEVICE ISSUED */
+.device_status_1 {
+  background-color: rgba(255, 0, 0, 0.5) !important;
+}
+
+/* DEVICE RETURNED */
+.device_status_2 {
+  background-color: rgba(0, 128, 0, 0.5) !important;
+}
+
+.performance_table_container table {
+  margin: 0;
+}

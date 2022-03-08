@@ -1,11 +1,7 @@
 import Moment from "react-moment";
 
 export const LiveTime = () => {
-  return (
-    <>
-      <Moment format="HH:mm:ss" interval={1000} />
-    </>
-  );
+  return <Moment element="h2" format="HH:mm:ss" interval={1000} />;
 };
 
 export const DateToday = () => {
