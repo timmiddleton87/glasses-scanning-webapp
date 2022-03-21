@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { useTable } from "react-table";
 import BTable from "react-bootstrap/Table";
 import "./tables.css";
+import EditModal from "./EditModal";
 
 const Table = (props) => {
   const columns = useMemo(() => props.columns, []);
@@ -32,7 +33,10 @@ const Table = (props) => {
               {headerGroup.headers.map((column) => (
                 <th
                   className={column.render("selector")}
-                  style={{ width: column.render("width") }}
+                  style={{
+                    width: column.render("width"),
+                    visibility: column.render("visibility"),
+                  }}
                   {...column.getHeaderProps()}
                 >
                   {column.render("Header")}
@@ -51,7 +55,19 @@ const Table = (props) => {
               >
                 {row.cells.map((cell) => {
                   return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td
+                      style={{
+                        visibility: cell.column.render("visibility"),
+                      }}
+                      {...cell.getCellProps()}
+                    >
+                      {cell.render("Cell")}
+                      {/* {cell.column.render("selector") === "colunit_id" ? (
+                        <EditModal />
+                      ) : (
+                        ""
+                      )} */}
+                    </td>
                   );
                 })}
               </tr>

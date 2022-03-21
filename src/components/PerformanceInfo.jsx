@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 import { useStateMachine } from "little-state-machine";
-import {
-  FloatingLabel,
-  Modal,
-  Form,
-  Button,
-  Table,
-  InputGroup,
-} from "react-bootstrap";
+import { FloatingLabel, Modal, Form, Button, Table } from "react-bootstrap";
 import "./tables.css";
+import MOCK_DATA from "./MOCK_DATA.json";
 
 function updatePerformanceAction(globalState, payload) {
   return {
@@ -28,6 +22,12 @@ function clearPerformanceAction(globalState) {
   };
 }
 
+function nextPerformanceAction(globalstate, payload) {
+  return {
+    performance: {},
+    devices: MOCK_DATA,
+  };
+}
 function PerformanceInfo() {
   const { state } = useStateMachine();
   const { actions } = useStateMachine({
@@ -61,9 +61,12 @@ function PerformanceInfo() {
 
   const [show, setShow] = useState(false);
 
-  const [validated, setValidated] = useState(false);
-
   const handleCloseForm = () => {
+    console.log("Hide Modal");
+    setShow(false);
+    setValidated(false);
+  };
+  const handleShowForm = () => {
     setValues({
       venuename: state.performance.venuename,
       stagename: state.performance.stagename,
@@ -74,39 +77,38 @@ function PerformanceInfo() {
       showtime: state.performance.showtime,
       showtime2: state.performance.showtime2,
     });
-    console.log("CLOSE");
-    setShow(false);
-    setValidated(false);
+    console.log("Show Modal");
+    setShow(true);
   };
-  const handleShow = () => setShow(true);
 
   const handleSubmitForm = (event) => {
-    console.log("SUBMIT");
+    event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
       event.stopPropagation();
+      console.log("Performance Form Not Valid");
+    } else {
+      console.log("Performance Form Valid!");
+      console.log("Saving Performance Info");
+      actions.updatePerformanceAction({
+        ...values,
+      });
+      handleCloseForm();
     }
 
     setValidated(true);
-
-    actions.updatePerformanceAction({
-      ...values,
-    });
   };
 
   const handleResetForm = () => {
-    console.log("RESET");
+    console.log("Reset Performance Info");
     setValues(INITIAL_PERF[0]);
-    actions.updatePerformanceAction({
-      ...values,
-    });
+    handleCloseForm();
+    setShow(true);
     setValidated(false);
-    setShow(false);
   };
 
   const handleNextPerformance = () => {
-    console.log("NEXT");
+    console.log("Next Performance");
     setValues({
       venuename: values.venuename,
       stagename: values.stagename,
@@ -117,7 +119,7 @@ function PerformanceInfo() {
       showtime: INITIAL_PERF[0]["showtime"],
       showtime2: INITIAL_PERF[0]["showtime2"],
     });
-    console.log(values);
+    setShow(true);
     setValidated(false);
   };
 
@@ -127,6 +129,8 @@ function PerformanceInfo() {
       [event.target.name]: event.target.value,
     }));
   };
+
+  const [validated, setValidated] = useState(false);
 
   return (
     <>
@@ -156,30 +160,32 @@ function PerformanceInfo() {
               </td>
             </tr>
             <tr>
-              <td>
-                <Button variant="primary" onClick={handleShow}>
-                  Press
+              <td colSpan={"4"}>
+                <Button variant="primary" onClick={handleShowForm}>
+                  Edit Performance Info
                 </Button>
               </td>
-              <td></td>
-              <td></td>
-              <td></td>
             </tr>
           </tbody>
         </Table>
       </div>
       <Modal show={show} onHide={handleCloseForm}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Performance Info</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form validated={validated} autoComplete="off">
+        <Form
+          noValidate
+          validated={validated}
+          autoComplete="off"
+          onSubmit={handleSubmitForm}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Performance Info</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <FloatingLabel controlId="formVenue" label="Venue:">
               <Form.Select
                 required
                 name="venuename"
                 onChange={handleChange}
-                defaultValue={values.venuename}
+                value={values.venuename}
               >
                 <option value="">Select venue</option>
                 <option value="People's Light">People's Light</option>
@@ -190,7 +196,7 @@ function PerformanceInfo() {
                 required
                 name="stagename"
                 onChange={handleChange}
-                defaultValue={values.stagename}
+                value={values.stagename}
               >
                 <option value="">Select stage</option>
                 <option value="Haas">Haas</option>
@@ -204,7 +210,7 @@ function PerformanceInfo() {
               placeholder="Other stage name"
               name="stagename2"
               onChange={handleChange}
-              defaultValue={values.stagename2}
+              value={values.stagename2}
               hidden={values.stagename === "Other..." ? false : true}
               required={values.stagename === "Other..." ? true : false}
             />
@@ -214,7 +220,7 @@ function PerformanceInfo() {
                 type="text"
                 placeholder="Staff Name"
                 name="staffname"
-                defaultValue={values.staffname}
+                value={values.staffname}
                 onChange={handleChange}
               />
             </FloatingLabel>
@@ -224,7 +230,7 @@ function PerformanceInfo() {
                 type="text"
                 placeholder="Show Name"
                 name="showname"
-                defaultValue={values.showname}
+                value={values.showname}
                 onChange={handleChange}
               />
             </FloatingLabel>
@@ -234,7 +240,7 @@ function PerformanceInfo() {
                 type="text"
                 placeholder="Performance Date"
                 name="showdate"
-                defaultValue={values.showdate}
+                value={values.showdate}
                 onChange={handleChange}
               />
             </FloatingLabel>
@@ -243,7 +249,7 @@ function PerformanceInfo() {
                 required
                 name="showtime"
                 onChange={handleChange}
-                defaultValue={values.showtime}
+                value={values.showtime}
               >
                 <option value="">Select time</option>
                 <option value="Matinee">Matinee</option>
@@ -257,39 +263,22 @@ function PerformanceInfo() {
               placeholder="Other performance time"
               name="showtime2"
               onChange={handleChange}
-              defaultValue={values.showtime2}
+              value={values.showtime2}
               hidden={values.showtime === "Other..." ? false : true}
               required={values.showtime === "Other..." ? true : false}
             />
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="danger" onClick={handleResetForm}>
-            RESET
-          </Button>
-          <Button variant="danger" onClick={handleCloseForm}>
-            Close
-          </Button>
-          <Button variant="secondary" onClick={handleNextPerformance}>
-            Next Performance
-          </Button>
-          <Button type="submit" onClick={handleSubmitForm}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="danger" onClick={handleResetForm}>
+              Clear All
+            </Button>
+            <Button variant="secondary" onClick={handleNextPerformance}>
+              Next Performance
+            </Button>
+            <Button type="submit">Save Changes</Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
-      {/* <button
-        onClick={async () => {
-          const result = await CustomDialog(<PerformanceForm state={state} />);
-          if (result != null) {
-            actions.updatePerformanceAction({
-              ...result,
-            });
-          }
-        }}
-      >
-        Edit Performance Data
-      </button> */}
     </>
   );
 }

@@ -1,6 +1,9 @@
 import React from "react";
 import { useStateMachine } from "little-state-machine";
 import { Button, Stack } from "react-bootstrap";
+import ExcelExport from "./ExcelExport";
+import GlassesModals from "./GlassesModals";
+import { BrowserView } from "react-device-detect";
 
 function resetDevicesAction(globalState, payload) {
   return {
@@ -12,13 +15,13 @@ function resetDevicesAction(globalState, payload) {
 function clearAllAction(globalState, payload) {
   return {
     ...globalState,
-    devices: {},
+    devices: [],
     performance: {},
   };
 }
 
 function Footer({ resetdata }) {
-  const { state, actions } = useStateMachine({
+  const { actions } = useStateMachine({
     clearAllAction,
     resetDevicesAction,
   });
@@ -26,13 +29,13 @@ function Footer({ resetdata }) {
     <>
       <Stack direction="horizontal" gap={3}>
         <p></p>
-        <Button
+        {/* <Button
           onClick={() => {
             actions.clearAllAction({});
           }}
         >
           Clear All
-        </Button>
+        </Button> */}
         <Button
           onClick={() => {
             actions.resetDevicesAction(resetdata);
@@ -40,6 +43,14 @@ function Footer({ resetdata }) {
         >
           Reset Devices
         </Button>
+        <GlassesModals />
+        <BrowserView>
+          <ExcelExport
+            exportType="download"
+            buttonTextInput="Download Report"
+          />
+        </BrowserView>
+        <ExcelExport exportType="email" buttonTextInput="Email Report" />
       </Stack>
     </>
   );

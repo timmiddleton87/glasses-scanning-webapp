@@ -1,0 +1,5 @@
+email:  noreply@builtforgood.co.uk
+pass:   quzcik-wundu4-jopkeF
+
+smtp:   mail.builtforgood.co.uk
+port:   465
