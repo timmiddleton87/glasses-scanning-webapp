@@ -36,13 +36,13 @@ function Footer({ resetdata }) {
         >
           Clear All
         </Button> */}
-        <Button
+        {/* <Button
           onClick={() => {
             actions.resetDevicesAction(resetdata);
           }}
         >
           Reset Devices
-        </Button>
+        </Button> */}
         <GlassesModals />
         <BrowserView>
           <ExcelExport

@@ -17,3 +17,17 @@ export const DateToday = () => {
 
   return <p>{d.toDateString()}</p>;
 };
+
+export function getCurrentDate(separator = "-") {
+  let newDate = new Date();
+  let date = String(newDate.getDate()).padStart(2, "0");
+  let monthcount = newDate.getMonth() + 1;
+  let month = String(monthcount).padStart(2, "0");
+  let year = newDate.getFullYear();
+
+  let outputstring = `${year}${separator}${month}${separator}${date}`;
+
+  console.log("OUTPUTSTRING: ", outputstring);
+
+  return outputstring;
+}

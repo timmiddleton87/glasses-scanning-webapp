@@ -3,6 +3,15 @@ import { useStateMachine } from "little-state-machine";
 import { FloatingLabel, Modal, Form, Button, Table } from "react-bootstrap";
 import "./tables.css";
 import MOCK_DATA from "./MOCK_DATA.json";
+import "react-datepicker/dist/react-datepicker.css";
+import { getCurrentDate } from "./TimeDisplay";
+
+function resetDevicesAction(globalState) {
+  return {
+    ...globalState,
+    devices: MOCK_DATA,
+  };
+}
 
 function updatePerformanceAction(globalState, payload) {
   return {
@@ -22,50 +31,52 @@ function clearPerformanceAction(globalState) {
   };
 }
 
-function nextPerformanceAction(globalstate, payload) {
-  return {
-    performance: {},
-    devices: MOCK_DATA,
-  };
-}
 function PerformanceInfo() {
   const { state } = useStateMachine();
   const { actions } = useStateMachine({
     updatePerformanceAction,
     clearPerformanceAction,
+    resetDevicesAction,
   });
+
+  const currentDate = getCurrentDate();
 
   const INITIAL_PERF = [
     {
-      venuename: "",
+      venuename: "People's Light",
       stagename: "",
       stagename2: "",
       staffname: "",
       showname: "",
-      showdate: "",
+      showdate: currentDate,
       showtime: "",
       showtime2: "",
     },
   ];
 
-  const [values, setValues] = useState({
-    venuename: state.performance.venuename,
-    stagename: state.performance.stagename,
-    stagename2: state.performance.stagename2,
-    staffname: state.performance.staffname,
-    showname: state.performance.showname,
-    showdate: state.performance.showdate,
-    showtime: state.performance.showtime,
-    showtime2: state.performance.showtime2,
-  });
+  const [values, setValues] = useState(INITIAL_PERF[0]);
 
   const [show, setShow] = useState(false);
+
+  const [validated, setValidated] = useState(false);
+
+  const [nextReady, setNextReady] = useState(false);
+
+  if (typeof state.performance.venuename === "undefined") {
+    actions.updatePerformanceAction({
+      ...values,
+    });
+  }
 
   const handleCloseForm = () => {
     console.log("Hide Modal");
     setShow(false);
     setValidated(false);
+    if (nextReady) {
+      setNextReady(false);
+    }
   };
+
   const handleShowForm = () => {
     setValues({
       venuename: state.performance.venuename,
@@ -79,6 +90,7 @@ function PerformanceInfo() {
     });
     console.log("Show Modal");
     setShow(true);
+    setNextReady(false);
   };
 
   const handleSubmitForm = (event) => {
@@ -93,6 +105,9 @@ function PerformanceInfo() {
       actions.updatePerformanceAction({
         ...values,
       });
+      if (nextReady) {
+        actions.resetDevicesAction();
+      }
       handleCloseForm();
     }
 
@@ -119,6 +134,7 @@ function PerformanceInfo() {
       showtime: INITIAL_PERF[0]["showtime"],
       showtime2: INITIAL_PERF[0]["showtime2"],
     });
+    setNextReady(true);
     setShow(true);
     setValidated(false);
   };
@@ -130,7 +146,13 @@ function PerformanceInfo() {
     }));
   };
 
-  const [validated, setValidated] = useState(false);
+  const handleChangeDate = (event) => {
+    setValues((values) => ({
+      ...values,
+      [event.target.name]: event.target.value,
+    }));
+    console.log("DATE: ", event.target.value);
+  };
 
   return (
     <>
@@ -237,17 +259,18 @@ function PerformanceInfo() {
             <FloatingLabel controlId="formDate" label="Performance Date:">
               <Form.Control
                 required
-                type="text"
-                placeholder="Performance Date"
+                type="date"
                 name="showdate"
+                placeholder="Performance Date"
                 value={values.showdate}
-                onChange={handleChange}
+                onChange={handleChangeDate}
               />
             </FloatingLabel>
             <FloatingLabel controlId="formTime" label="Performance Time:">
               <Form.Select
                 required
                 name="showtime"
+                placeholder="Performance Time"
                 onChange={handleChange}
                 value={values.showtime}
               >
