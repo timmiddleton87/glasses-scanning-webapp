@@ -48,7 +48,7 @@ if($_SERVER['HTTP_REFERER'] === 'http://localhost:3000/' || 'https://builtforgoo
                 echo "Report could not be sent. Mailer Error: {$mail->ErrorInfo}";
             }
     } else {
-        echo("Please provide all variables!");
+        echo("You can't use this server... please provide all variables!");
     }
 } else {
 echo("You can't use this server...");

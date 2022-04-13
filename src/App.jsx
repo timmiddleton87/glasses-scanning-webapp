@@ -10,10 +10,18 @@ import TableFeeder from "./components/TableFeeder";
 import { Container, Row, Col, Navbar } from "react-bootstrap";
 import { DeviceCounter } from "./components/IssuedCounter";
 import useWindowDimensions from "./components/WindowDims";
+import Temporary from "./components/Temporary";
+
+const appVersion = "0.2";
 
 const defaultData = {
+  version: appVersion,
   devices: MOCK_DATA,
   performance: {},
+  exports: {
+    downloaded: false,
+    emailed: false,
+  },
 };
 
 createStore(defaultData, {
@@ -23,6 +31,27 @@ createStore(defaultData, {
 
 function App() {
   const { height, width } = useWindowDimensions();
+
+  function ResetLocalStorage() {
+    console.log("REMOVING THE BFG STORE");
+    localStorage.removeItem("bfgStore");
+    window.location.reload(false);
+  }
+
+  var ls = JSON.parse(localStorage.getItem("bfgStore"));
+  console.log(ls);
+
+  if (ls === null) {
+    ResetLocalStorage();
+  } else if (ls.version === "undefined") {
+    ResetLocalStorage();
+  } else if (
+    ls.version !== appVersion &&
+    (ls.exports.downloaded || ls.exports.emailed)
+  ) {
+    ResetLocalStorage();
+  }
+
   return (
     <StateMachineProvider>
       {width + height > 1500 && (
@@ -34,6 +63,7 @@ function App() {
                   <Col sm>
                     <h4>Glasses Tracker</h4>
                     <LiveTime />
+                    <Temporary />
                   </Col>
                   <Col sm={7}>
                     <PerformanceInfo />
@@ -55,7 +85,7 @@ function App() {
                 </Row>
               </Container>
               <Navbar fixed="bottom" className="app_footer">
-                <Footer resetdata={defaultData} />
+                <Footer />
               </Navbar>
             </>
           )}

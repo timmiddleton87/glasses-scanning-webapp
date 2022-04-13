@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useStateMachine } from "little-state-machine";
 import { FloatingLabel, Modal, Form, Button, Table } from "react-bootstrap";
 import "./tables.css";
 import MOCK_DATA from "./MOCK_DATA.json";
 import "react-datepicker/dist/react-datepicker.css";
 import { getCurrentDate } from "./TimeDisplay";
+
+function resetButtonStatus(globalState) {
+  return {
+    ...globalState,
+    exports: {
+      downloaded: false,
+      emailed: false,
+    },
+  };
+}
 
 function resetDevicesAction(globalState) {
   return {
@@ -37,6 +47,7 @@ function PerformanceInfo() {
     updatePerformanceAction,
     clearPerformanceAction,
     resetDevicesAction,
+    resetButtonStatus,
   });
 
   const currentDate = getCurrentDate();
@@ -62,6 +73,11 @@ function PerformanceInfo() {
 
   const [nextReady, setNextReady] = useState(false);
 
+  function handleSetNextReady(val) {
+    console.log("NextReady:", nextReady, val);
+    setNextReady(val);
+  }
+
   if (typeof state.performance.venuename === "undefined") {
     actions.updatePerformanceAction({
       ...values,
@@ -73,7 +89,7 @@ function PerformanceInfo() {
     setShow(false);
     setValidated(false);
     if (nextReady) {
-      setNextReady(false);
+      handleSetNextReady(false);
     }
   };
 
@@ -90,7 +106,7 @@ function PerformanceInfo() {
     });
     console.log("Show Modal");
     setShow(true);
-    setNextReady(false);
+    handleSetNextReady(false);
   };
 
   const handleSubmitForm = (event) => {
@@ -107,6 +123,8 @@ function PerformanceInfo() {
       });
       if (nextReady) {
         actions.resetDevicesAction();
+        actions.resetButtonStatus();
+        window.location.reload(false);
       }
       handleCloseForm();
     }
@@ -120,6 +138,7 @@ function PerformanceInfo() {
     handleCloseForm();
     setShow(true);
     setValidated(false);
+    handleSetNextReady(true);
   };
 
   const handleNextPerformance = () => {
@@ -134,7 +153,7 @@ function PerformanceInfo() {
       showtime: INITIAL_PERF[0]["showtime"],
       showtime2: INITIAL_PERF[0]["showtime2"],
     });
-    setNextReady(true);
+    handleSetNextReady(true);
     setShow(true);
     setValidated(false);
   };
@@ -199,7 +218,9 @@ function PerformanceInfo() {
           onSubmit={handleSubmitForm}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Edit Performance Info</Modal.Title>
+            <Modal.Title>
+              {nextReady ? "New" : "Edit"} Performance Info
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <FloatingLabel controlId="formVenue" label="Venue:">

@@ -27,7 +27,5 @@ export function getCurrentDate(separator = "-") {
 
   let outputstring = `${year}${separator}${month}${separator}${date}`;
 
-  console.log("OUTPUTSTRING: ", outputstring);
-
   return outputstring;
 }

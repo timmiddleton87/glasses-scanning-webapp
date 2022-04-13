@@ -4,14 +4,71 @@ import { useStateMachine } from "little-state-machine";
 import XLSX from "sheetjs-style";
 import { devicesUsed, devicesReturned, devicesOutNow } from "./IssuedCounter";
 
-function ExcelExport({ exportType, buttonTextInput }) {
+const INITIAL_EXPORT = {
+  downloaded: false,
+  emailed: false,
+};
+
+const BUTTON_MESSAGES = {
+  email_default: "Email Report",
+  download_default: "Download Report",
+  email_empty: "",
+  download_empty: "",
+  email_sent: "Email Sent",
+  download_complete: "File Downloaded",
+};
+
+function updateButtonStatus(globalState, payload) {
+  return {
+    ...globalState,
+    exports: {
+      ...globalState.exports,
+      ...payload,
+    },
+  };
+}
+
+function ExcelExport({ exportType }) {
   const { state } = useStateMachine();
+  const { actions } = useStateMachine({
+    updateButtonStatus,
+  });
 
-  const [buttonStatus, setButtonStatus] = useState(true);
+  const [buttonPressed, setButtonPressed] = useState(state.exports.downloaded);
+  const [buttonText, setButtonText] = useState("");
 
-  const [emailResponse, setEmailResponse] = useState("");
+  function controlButtonState() {
+    if (exportType === "download") {
+      setButtonPressed(state.exports.downloaded);
+      if (state.exports.downloaded) {
+        setButtonText(BUTTON_MESSAGES.download_complete);
+      } else {
+        setButtonText(BUTTON_MESSAGES.download_default);
+      }
+    } else {
+      setButtonPressed(state.exports.emailed);
+      if (state.exports.emailed) {
+        setButtonText(BUTTON_MESSAGES.email_sent);
+      } else {
+        setButtonText(BUTTON_MESSAGES.email_default);
+      }
+    }
+  }
 
-  const [buttonText, setButtonText] = useState(buttonTextInput);
+  useEffect(() => {
+    if (typeof state.exports === "undefined") {
+      console.log("EXPORT DID NOT EXIST", exportType);
+      actions.updateButtonStatus(INITIAL_EXPORT);
+    } else {
+      console.log("EXPORT EXISTED", exportType);
+      console.log(state.exports);
+      controlButtonState();
+    }
+  });
+
+  useEffect(() => {
+    controlButtonState();
+  }, [state.exports]);
 
   function emailReport(reportFile) {
     console.log("emailReport Started", reportFile.length);
@@ -47,15 +104,19 @@ function ExcelExport({ exportType, buttonTextInput }) {
         if (xhr.status === 200) {
           // request succesful
           console.log("Email Success: " + xhr.responseText);
-          setEmailResponse(xhr.responseText);
-          setButtonStatus(false);
-          setButtonText("Email Sent");
+          setButtonPressed(true);
+          setButtonText(BUTTON_MESSAGES.email_sent);
+          actions.updateButtonStatus({
+            emailed: true,
+          });
         } else {
           // request unsuccessful
           console.log("Email Failure: " + xhr.responseText);
-          setEmailResponse(xhr.responseText);
-          setButtonStatus(true);
-          setButtonText(buttonTextInput);
+          setButtonPressed(false);
+          setButtonText(BUTTON_MESSAGES.email_default);
+          actions.updateButtonStatus({
+            emailed: false,
+          });
         }
       }
     });
@@ -70,7 +131,8 @@ function ExcelExport({ exportType, buttonTextInput }) {
   }
 
   const handleOnExport = () => {
-    if (state.devices.length > 0 && Object.keys(state.performance).length > 0) {
+    if (state.performance.staffname !== "") {
+      // if (state.devices.length > 0 && Object.keys(state.performance).length > 0) {
       const filename = (
         state.performance.showname +
         " - " +
@@ -213,27 +275,38 @@ function ExcelExport({ exportType, buttonTextInput }) {
 
       XLSX.utils.book_append_sheet(wb, ws, sheetname);
 
-      if (exportType === "download" && buttonStatus) {
+      if (exportType === "download" && !buttonPressed) {
         console.log("Downloading Report");
         XLSX.writeFile(wb, filename);
-        setButtonStatus(false);
-        setButtonText("Downloaded");
-      } else if (exportType === "email" && buttonStatus) {
+        setButtonPressed(true);
+        setButtonText(BUTTON_MESSAGES.download_complete);
+        actions.updateButtonStatus({
+          downloaded: true,
+        });
+      } else if (exportType === "email" && !buttonPressed) {
         console.log("Emailing Report");
         emailReport(XLSX.write(wb, { bookType: "xlsx", type: "base64" }));
-        setButtonStatus(false);
-        setButtonText("");
+        setButtonPressed(true);
+        setButtonText(BUTTON_MESSAGES.email_empty);
+        actions.updateButtonStatus({
+          emailed: true,
+        });
       }
     } else {
       console.log("Couldn't export to Excel...");
-      setButtonStatus(true);
-      setButtonText(buttonTextInput);
+      setButtonPressed(false);
+      if (exportType === "download") {
+        setButtonText(BUTTON_MESSAGES.download_default);
+      } else {
+        setButtonText(BUTTON_MESSAGES.email_default);
+      }
+      actions.updateButtonStatus(INITIAL_EXPORT);
     }
   };
 
   return (
     <>
-      <Button disabled={!buttonStatus} onClick={handleOnExport}>
+      <Button disabled={buttonPressed} onClick={handleOnExport}>
         <Spinner
           as="span"
           animation="border"
