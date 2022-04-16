@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useStateMachine } from "little-state-machine";
 import { FloatingLabel, Modal, Form, Button } from "react-bootstrap";
 import moment from "moment";
+import toast from "react-hot-toast";
 
 function GlassesModals() {
   const { state } = useStateMachine();
@@ -90,6 +91,7 @@ function GlassesModals() {
     } else {
       console.log("Issuing Form Valid!");
       console.log("Saving Glasses Issue Info");
+      toast.success("Glasses ID " + issueValues.unit_id + " Issued");
       actions.updateGlassesAction({
         ...issueValues,
       });
@@ -158,6 +160,7 @@ function GlassesModals() {
       );
       if (filterCheck.length === 1) {
         console.log("Sumbitting Return Data");
+        toast.success("Glasses ID " + returnValues.unit_id + " Returned");
         actions.updateGlassesAction({
           ...returnValues,
         });
@@ -276,6 +279,7 @@ function GlassesModals() {
               <Form.Control
                 as="textarea"
                 name="notes"
+                style={{ height: "120px" }}
                 placeholder="Leave a comment here"
                 onChange={handleChangeReturn}
               />

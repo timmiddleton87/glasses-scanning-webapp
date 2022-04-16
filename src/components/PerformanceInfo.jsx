@@ -5,6 +5,7 @@ import "./tables.css";
 import MOCK_DATA from "./MOCK_DATA.json";
 import "react-datepicker/dist/react-datepicker.css";
 import { getCurrentDate } from "./TimeDisplay";
+import toast from "react-hot-toast";
 
 function resetButtonStatus(globalState) {
   return {

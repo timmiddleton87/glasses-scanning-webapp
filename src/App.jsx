@@ -11,8 +11,9 @@ import { Container, Row, Col, Navbar } from "react-bootstrap";
 import { DeviceCounter } from "./components/IssuedCounter";
 import useWindowDimensions from "./components/WindowDims";
 import Temporary from "./components/Temporary";
+import { Toaster } from "react-hot-toast";
 
-const appVersion = "0.2";
+const appVersion = "0.5";
 
 const defaultData = {
   version: appVersion,
@@ -54,6 +55,22 @@ function App() {
 
   return (
     <StateMachineProvider>
+      <Toaster
+        position="bottom-center"
+        containerStyle={{
+          padding: "150px",
+        }}
+        toastOptions={{
+          // Define default options
+          className: "",
+          duration: 5000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+            border: "3px solid #0d6efd",
+          },
+        }}
+      />
       {width + height > 1500 && (
         <>
           {width >= height && (

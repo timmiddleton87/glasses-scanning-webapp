@@ -3,6 +3,11 @@ import { Button, Spinner } from "react-bootstrap";
 import { useStateMachine } from "little-state-machine";
 import XLSX from "sheetjs-style";
 import { devicesUsed, devicesReturned, devicesOutNow } from "./IssuedCounter";
+import toast from "react-hot-toast";
+
+// SET THESE TO ADJUST THE SENDING PATTERN!
+const recipientEmail = "housemanager@peopleslight.org";
+const phpMailServer = "https://builtforgood.co.uk/scanning/sendmail/index.php";
 
 const INITIAL_EXPORT = {
   downloaded: false,
@@ -72,6 +77,7 @@ function ExcelExport({ exportType }) {
 
   function emailReport(reportFile) {
     console.log("emailReport Started", reportFile.length);
+    toast.loading("Emailing...");
 
     // create a new XMLHttpRequest
     var xhr = new XMLHttpRequest();
@@ -87,7 +93,7 @@ function ExcelExport({ exportType }) {
       "showname",
       state.performance.showname.replace(/[*:/\\[\]?]/g, "_")
     );
-    formData.append("sendto", "tim@timmiddleton.co.uk");
+    formData.append("sendto", recipientEmail);
     formData.append(
       "showdatetime",
       (state.performance.showdate + " " + state.performance.showtime).replace(
@@ -104,41 +110,40 @@ function ExcelExport({ exportType }) {
         if (xhr.status === 200) {
           // request succesful
           console.log("Email Success: " + xhr.responseText);
+          toast.success("Email Sent!");
           setButtonPressed(true);
           setButtonText(BUTTON_MESSAGES.email_sent);
           actions.updateButtonStatus({
             emailed: true,
           });
+          return true;
         } else {
           // request unsuccessful
           console.log("Email Failure: " + xhr.responseText);
+          toast.error("Email Failed!");
           setButtonPressed(false);
           setButtonText(BUTTON_MESSAGES.email_default);
           actions.updateButtonStatus({
             emailed: false,
           });
+          return false;
         }
       }
     });
 
-    xhr.open(
-      "POST",
-      "https://builtforgood.co.uk/scanning/sendmail/index.php",
-      true
-    );
+    xhr.open("POST", phpMailServer, true);
 
     xhr.send(formData);
   }
 
   const handleOnExport = () => {
     if (state.performance.staffname !== "") {
-      // if (state.devices.length > 0 && Object.keys(state.performance).length > 0) {
       const filename = (
-        state.performance.showname +
-        " - " +
         state.performance.showdate +
         " " +
         state.performance.showtime +
+        " - " +
+        state.performance.showname +
         ".xlsx"
       ).replace(/[*:/\\[\]?]/g, "_");
 
@@ -276,6 +281,7 @@ function ExcelExport({ exportType }) {
       XLSX.utils.book_append_sheet(wb, ws, sheetname);
 
       if (exportType === "download" && !buttonPressed) {
+        toast.success("Download Success!");
         console.log("Downloading Report");
         XLSX.writeFile(wb, filename);
         setButtonPressed(true);

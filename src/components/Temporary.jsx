@@ -11,7 +11,7 @@ function Temporary() {
       : 0;
 
   // USE THIS TO SHOW APP VERSION
-  var variable2 = "App Version: " + state.version;
+  var variable2 = "v" + state.version;
 
   return <div>{variable2}</div>;
 }
