@@ -13,7 +13,7 @@ import useWindowDimensions from "./components/WindowDims";
 import Temporary from "./components/Temporary";
 import { Toaster } from "react-hot-toast";
 
-const appVersion = "0.5";
+const appVersion = "0.6";
 
 const defaultData = {
   version: appVersion,
@@ -26,7 +26,7 @@ const defaultData = {
 };
 
 createStore(defaultData, {
-  name: "bfgStore",
+  name: "bfg",
   storageType: localStorage,
 });
 
