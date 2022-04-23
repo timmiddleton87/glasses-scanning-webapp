@@ -13,7 +13,8 @@ import useWindowDimensions from "./components/WindowDims";
 import Temporary from "./components/Temporary";
 import { Toaster } from "react-hot-toast";
 
-const appVersion = "0.6";
+const appVersion = "0.7";
+const storageName = "bfg";
 
 const defaultData = {
   version: appVersion,
@@ -26,7 +27,7 @@ const defaultData = {
 };
 
 createStore(defaultData, {
-  name: "bfg",
+  name: storageName,
   storageType: localStorage,
 });
 
@@ -35,11 +36,11 @@ function App() {
 
   function ResetLocalStorage() {
     console.log("REMOVING THE BFG STORE");
-    localStorage.removeItem("bfgStore");
+    localStorage.removeItem(storageName);
     window.location.reload(false);
   }
 
-  var ls = JSON.parse(localStorage.getItem("bfgStore"));
+  var ls = JSON.parse(localStorage.getItem(storageName));
   console.log(ls);
 
   if (ls === null) {
