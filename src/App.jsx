@@ -13,8 +13,8 @@ import useWindowDimensions from "./components/WindowDims";
 import Temporary from "./components/Temporary";
 import { Toaster } from "react-hot-toast";
 
-const appVersion = "0.7";
-const storageName = "bfg";
+const appVersion = "0.8";
+const storageName = "bfgScanning" + appVersion;
 
 const defaultData = {
   version: appVersion,
@@ -34,25 +34,25 @@ createStore(defaultData, {
 function App() {
   const { height, width } = useWindowDimensions();
 
-  function ResetLocalStorage() {
-    console.log("REMOVING THE BFG STORE");
-    localStorage.removeItem(storageName);
-    window.location.reload(false);
-  }
+  // function ResetLocalStorage() {
+  //   console.log("REMOVING THE BFG STORE", storageName);
+  //   localStorage.removeItem(storageName);
+  //   window.location.reload(false);
+  // }
 
-  var ls = JSON.parse(localStorage.getItem(storageName));
-  console.log(ls);
+  // var ls = JSON.parse(localStorage.getItem(storageName));
+  // console.log(ls);
 
-  if (ls === null) {
-    ResetLocalStorage();
-  } else if (ls.version === "undefined") {
-    ResetLocalStorage();
-  } else if (
-    ls.version !== appVersion &&
-    (ls.exports.downloaded || ls.exports.emailed)
-  ) {
-    ResetLocalStorage();
-  }
+  // if (ls === null) {
+  //   ResetLocalStorage();
+  // } else if (ls.version === "undefined") {
+  //   ResetLocalStorage();
+  // } else if (
+  //   ls.version !== appVersion &&
+  //   (ls.exports.downloaded || ls.exports.emailed)
+  // ) {
+  //   ResetLocalStorage();
+  // }
 
   return (
     <StateMachineProvider>
